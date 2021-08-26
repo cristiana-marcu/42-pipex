@@ -3,39 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: RAMON <RAMON@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/25 15:10:25 by RAMON             #+#    #+#             */
-/*   Updated: 2021/08/25 17:09:52 by RAMON            ###   ########.fr       */
+/*   Created: 2021/08/26 13:26:28 by cmarcu            #+#    #+#             */
+/*   Updated: 2021/08/26 16:34:25 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
+#include "pipex.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    /*fd[0] is for reading
-    fd[1] is for writing*/
-    int pipefd[2];
-    pid_t pid;
+	int pipefd[2];
+	pid_t pid;
+	int out_file;
+	int status;
 
-    if (argc == 5)
-    {
-        pipe(pipefd);
-        pid = fork();
-        if (pid < 0)
-            printf("Fork didn't work");
-        else if (pid == 0) //child process = left of the pipe
-        {
-            printf("I'm the child process");
-        }
-        else //parent process = right of the pipe
-            pintf("I'm the parent process");
-    }
-    printf("Read File Descriptor Value: %d\n", pipefd[0]);
-    printf("Write File Descriptor Value: %d\n", pipefd[1]);
-    return (0);
+	argc = 3;
+	pipe(pipefd);
+	pid = fork();
+	if (pid < 0)
+	{
+		printf("Fork didn´t work");
+	}
+	else if (pid == 0) //proceso hijo
+	{
+		//Cerrar extremo de lectura
+		close(pipefd[R_END]);
+
+		//Duplicar el extremo de escritura para sustituir stdout dup2(pipefd[W], STDIN_FILENO)
+		dup2(pipefd[W_END], STDIN_FILENO);
+
+		//Cerrar el extremo que acabamos de duplicar
+		close(pipefd[W_END]);
+
+		//Ejecutar el comando
+		execlp("/bin/ls", "ls", "-la", NULL);
+	}
+	else //proceso padre
+	{
+		//Cerrar extremo de escritura del hijo
+		close(pipefd[W_END]);
+
+		//Crear otro hijo porque vamos a ejecutar otro exe
+		pid = fork();
+
+		if (pid == 0) //proceso hijo
+		{
+			//Abrir archivo y redireccionar salida estandar al archivo
+			out_file = open(argv[3], O_WRONLY);
+			dup2(pipefd[R_END], STDIN_FILENO);
+			close(pipefd[R_END]);
+			dup2(out_file, STDOUT_FILENO);
+
+			//Ejecutar comando
+			execlp("usr/bin/wc", "wc", NULL);
+		}
+		else //padre
+		{
+			close(pipefd[R_END]);
+		}
+	}
+	wait(&status);
+	wait(&status);
 }
-
-//TODO: dado dos archivos ./pipex infile outfile, leer lo que hay en infile y escribirlo en outfile
