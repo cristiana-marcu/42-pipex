@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:41:01 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/30 17:15:02 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/08/30 18:03:36 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@
 # define W 1
 # define R 0
 
-void pipex(int infile, int outfile, char **argv, char **envp);
+void pipex(int infile, int outfile, char **argv, char **envp); //, char **argv, char **envp
 
 #endif
