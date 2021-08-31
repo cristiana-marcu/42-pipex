@@ -6,19 +6,24 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:26:28 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/30 18:09:17 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/08/31 16:26:14 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void pipex(int infile, int outfile, char **argv, char **envp) // , char **argv, char **envp
+void pipex(int infile, int outfile, char **argv, char **envp)
 {
 	int end[2];
 	pid_t child1;
 	pid_t child2;
 	int status;
 
+	char	**argv_cmd1;
+	char	**argv_cmd2;
+
+	argv_cmd1 = ft_split(argv[2], ' ');
+	argv_cmd2 = ft_split(argv[3], ' ');
 	pipe(end);
 	child1 = fork();
 	if (child1 == -1)
@@ -32,7 +37,8 @@ void pipex(int infile, int outfile, char **argv, char **envp) // , char **argv, 
 		close(infile);
 
 		//Ejecutar el comando
-		execve("/bin/ls", &argv[2], envp);
+		execve("/bin/ls", argv_cmd1, envp);
+		perror("Error");
 	}
 	else //proceso padre
 	{
@@ -44,12 +50,13 @@ void pipex(int infile, int outfile, char **argv, char **envp) // , char **argv, 
 		else if (child2 == 0) //proceso hijo
 		{
 			dup2(end[R], STDIN_FILENO);
-			close(end[R]);
 			dup2(outfile, STDOUT_FILENO);
+			close(end[W]);
 			close(outfile);
 
 			//Ejecutar comando
-			execve("/usr/bin/wc", &argv[3], envp);
+			execve("/usr/bin/wc", argv_cmd2, envp);
+			perror("Error");
 		}
 		else //padre
 		{
@@ -62,8 +69,9 @@ void pipex(int infile, int outfile, char **argv, char **envp) // , char **argv, 
 
 int	main(int argc, char **argv, char **envp)
 {
-	int infile;
-	int outfile;
+	int		infile;
+	int		outfile;
+
 
 	infile = open(argv[1], O_RDONLY);
 	outfile = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -77,5 +85,18 @@ int	main(int argc, char **argv, char **envp)
 		printf("Wrong formatting");
 		return (-1);
 	}
+	//Look for command paths
+
+
+	/*int i = 0;
+	while (argv_cmd1[i] != NULL)
+	{
+		printf("%s\n", argv_cmd1[i]);
+		i++;
+	}*/
+
+
+
 	pipex(infile, outfile, argv, envp);
+	//system("leaks pipex");
 }
