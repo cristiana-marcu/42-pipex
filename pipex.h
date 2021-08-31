@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:41:01 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/31 14:33:02 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/08/31 17:13:57 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define R 0
 
 void pipex(int infile, int outfile, char **argv, char **envp); //, char **argv, char **envp
+void	child_one(int infile, int end[], char **argv, char **envp);
+void	child_two(int outfile, int end[], char **argv, char **envp);
 
 //Utils
 char	**ft_split(char const *s, char c);
