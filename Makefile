@@ -6,12 +6,12 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/25 15:00:27 by RAMON             #+#    #+#              #
-#    Updated: 2021/08/31 14:40:50 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/08/31 17:41:14 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS = pipex.c ft_split.c ft_strchr.c ft_strjoin.c ft_strnstr.c ft_substr.c \
-	ft_strlen.c
+	ft_strlen.c ft_strdup.c
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc

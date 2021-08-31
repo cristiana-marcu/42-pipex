@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:41:01 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/31 17:13:57 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/08/31 17:41:02 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ void pipex(int infile, int outfile, char **argv, char **envp); //, char **argv, 
 void	child_one(int infile, int end[], char **argv, char **envp);
 void	child_two(int outfile, int end[], char **argv, char **envp);
 
+char	*get_path(char *cmd, char **envp);
+int		get_path_line(char **envp);
+
 //Utils
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *str);
 
 #endif
