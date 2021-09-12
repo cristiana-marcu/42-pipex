@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: RAMON <RAMON@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:26:28 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/31 18:04:05 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/09/12 17:08:26 by RAMON            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	child_two(int outfile, int end[], char **argv, char **envp)
 	dup2(outfile, STDOUT_FILENO);
 	close(end[W]);
 	close(outfile);
-	//Look for path
 	path = get_path(argv_cmd2[0], envp);
-	//Ejecutar comando
 	execve(path, argv_cmd2, envp);
 	perror("Error");
 }
@@ -55,17 +53,17 @@ void	pipex(int infile, int outfile, char **argv, char **envp)
 	child1 = fork();
 	if (child1 == -1)
 		return (perror("Fork: "));
-	else if (child1 == 0) //proceso hijo
+	else if (child1 == 0)
 		child_one(infile, end, argv, envp);
-	else //proceso padre
+	else
 	{
 		close(end[W]);
 		child2 = fork();
 		if (child2 == -1)
 			return (perror("Fork: "));
-		else if (child2 == 0) //proceso hijo
+		else if (child2 == 0)
 			child_two(outfile, end, argv, envp);
-		else //padre
+		else
 			close(end[R]);
 	}
 	wait(&status);
@@ -86,9 +84,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (argc != 5)
 	{
-		printf("Wrong formatting");
+		perror("Wrong formatting");
 		return (-1);
 	}
 	pipex(infile, outfile, argv, envp);
-	//system("leaks pipex");
 }
