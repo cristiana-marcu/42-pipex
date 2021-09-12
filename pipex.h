@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: RAMON <RAMON@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 13:41:01 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/08/31 17:41:02 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/09/12 17:15:30 by RAMON            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,13 @@
 # define W 1
 # define R 0
 
-void pipex(int infile, int outfile, char **argv, char **envp); //, char **argv, char **envp
+void	pipex(int infile, int outfile, char **argv, char **envp);
 void	child_one(int infile, int end[], char **argv, char **envp);
 void	child_two(int outfile, int end[], char **argv, char **envp);
 
 char	*get_path(char *cmd, char **envp);
 int		get_path_line(char **envp);
 
-//Utils
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
